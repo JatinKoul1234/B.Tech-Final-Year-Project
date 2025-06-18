@@ -2503,31 +2503,33 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
 if selected_page == "AI Assistant":
     st.header("🧠 AnnDoot AI Assistant")
 
-    # Step 1: Accept voice
-    uploaded_audio = st.file_uploader("📁 Upload your voice message (.wav)", type=["wav"])
-    query = st.text_input("💬 Your question:")
+    # 1. Show file uploader above chat
+    uploaded_audio = st.file_uploader("🎙 Upload your voice message (.wav)", type=["wav"])
+    voice_command = None
 
     if uploaded_audio:
         import speech_recognition as sr
         recognizer = sr.Recognizer()
         with sr.AudioFile(uploaded_audio) as source:
             audio = recognizer.record(source)
-
         try:
-            command = recognizer.recognize_google(audio)
-            st.success(f"🎤 You said: {command}")
-            query = command  # 🔁 Inject voice input into query box
+            voice_command = recognizer.recognize_google(audio)
+            st.chat_message("user").write(f"🎤 {voice_command}")
         except Exception as e:
-            st.error(f"❌ Could not understand audio: {e}")
+            st.chat_message("assistant").error(f"Voice error: {e}")
 
-    # Step 2: Use the voice or text as input for chatbot
-    if query:
-        with st.spinner("🤖 Thinking..."):
-            # 🔁 Replace with your chatbot function
-            # Example:
-            # response = gemini_chatbot(query)
-            response = f"(Fake reply) You asked: {query}"  # demo
-        st.success(f"🧠 AI: {response}")
+    # 2. Text + Voice input combo
+    user_input = st.chat_input("💬 Ask me something...")
+
+    if voice_command:
+        user_input = voice_command  # Voice overrides input box
+
+    if user_input:
+        st.chat_message("user").write(user_input)
+        # Replace below with real Gemini/OpenAI response
+        response = f"(Bot) You asked: {user_input}"
+        st.chat_message("assistant").write(response)
+
 
             
 elif selected_page == "Crop Recommendation":
