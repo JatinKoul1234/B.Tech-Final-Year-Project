@@ -831,9 +831,9 @@ def get_treatment(predicted_disease, language,):
 
 
 # ----3. Fertilizer Model
-# fert_model = pickle.load(open('fert_model_simple.pkl', 'rb'))
-import joblib
-fert_model = joblib.load("fert_model_simple.pkl")
+fert_model = pickle.load(open('fert_model_simple.pkl', 'rb'))
+# import joblib
+# fert_model = joblib.load("fert_model_simple.pkl")
 crop_encoder = pickle.load(open('crop_encoder.pkl', 'rb'))
 fertilizer_encoder = pickle.load(open('fertilizer_encoder.pkl', 'rb'))
 def predict_fertilizer_simple(n, p, k, crop_name):
@@ -2479,3 +2479,11 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
             else:
                 st.sidebar.success(f"🌿 Recommended Fertilizer: {fert_result}")
 
+import socket
+
+def is_localhost():
+    return socket.gethostname().startswith("DESKTOP")  # or whatever your PC's hostname starts with
+if is_localhost():
+    voice_command = recognize_voice_command()
+else:
+    st.warning("🎙 Voice input is only available in the local version of this app.")
