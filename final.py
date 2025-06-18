@@ -2504,6 +2504,7 @@ if selected_page == "AI Assistant":
     st.header("🧠 AnnDoot AI Assistant")
 
     # 1. Show file uploader above chat
+    st.subheader("🗣️ Voice Assistant Input")
     uploaded_audio = st.file_uploader("🎙 Upload your voice message (.wav)", type=["wav"])
     voice_command = None
 
