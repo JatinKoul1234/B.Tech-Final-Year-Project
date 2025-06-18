@@ -2587,29 +2587,35 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
 if selected_page == "AI Assistant":
     st.header("🧠 AnnDoot AI Assistant")
 
-    st.subheader("🗣️ Voice Assistant Input")
+    # Voice file uploader (give it a unique key)
     uploaded_audio = st.file_uploader("🎙 Upload your voice message (.wav)", type=["wav"], key="ai_voice")
+
+    # Use placeholder to keep it inside chat layout
     voice_command = None
 
-    if uploaded_audio:
+    if uploaded_audio is not None:
         import speech_recognition as sr
         recognizer = sr.Recognizer()
+
         with sr.AudioFile(uploaded_audio) as source:
             audio = recognizer.record(source)
+
         try:
             voice_command = recognizer.recognize_google(audio)
             st.chat_message("user").write(f"🎤 {voice_command}")
         except Exception as e:
-            st.chat_message("assistant").error(f"Voice error: {e}")
+            st.chat_message("assistant").write(f"❌ Voice error: {e}")
 
-    user_input = st.chat_input("💬 Ask me something...")
+    # Combine chat input with voice
+    user_input = st.chat_input("💬 Type your question or use voice above")
 
     if voice_command:
-        user_input = voice_command  # Voice overrides input
+        user_input = voice_command
 
     if user_input:
         st.chat_message("user").write(user_input)
-        response = f"(Bot) You asked: {user_input}"
+        # Replace with Gemini/OpenAI reply logic
+        response = f"(Demo response) You said: {user_input}"
         st.chat_message("assistant").write(response)
 
 
