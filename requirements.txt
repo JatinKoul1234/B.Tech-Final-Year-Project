@@ -7,7 +7,7 @@ keras
 lime
 matplotlib
 numpy
-opencv-python
+opencv-python-headless==4.8.0.76
 pandas
 python-dotenv
 scikit-learn
