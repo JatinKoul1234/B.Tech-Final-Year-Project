@@ -2672,8 +2672,9 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
 #         st.success(f"🎤 You said: {command}")
 
 import streamlit as st
+import speech_recognition as sr
 
-# Simple sidebar navigation without page_map
+# Sidebar navigation — ONLY ONE TIME!
 selected_page = st.sidebar.selectbox("🔖 Navigation", [
     "Home",
     "Crop Recommendation",
@@ -2684,13 +2685,14 @@ selected_page = st.sidebar.selectbox("🔖 Navigation", [
 
 # 🏠 Home Page
 if selected_page == "Home":
-    st.header("🏡 Welcome to AnnDoot")
-    st.write("Empowering farmers with AI-based recommendations.")
+    st.header("🏡 Home")
+    st.write("Welcome to AnnDoot – your AI-powered farming assistant.")
 
 # ℹ️ About Page
 elif selected_page == "About":
     st.header("ℹ️ About")
     st.write("AnnDoot is your smart assistant for agriculture.")
+    st.write("Built by Team AnnDoot | © 2025")
 
 # 🌾 Crop Recommendation Page
 elif selected_page == "Crop Recommendation":
@@ -2699,7 +2701,6 @@ elif selected_page == "Crop Recommendation":
     uploaded_audio = st.file_uploader("📁 Upload voice for crop command (.wav)", type=["wav"], key="crop_voice")
 
     if uploaded_audio:
-        import speech_recognition as sr
         recognizer = sr.Recognizer()
         with sr.AudioFile(uploaded_audio) as source:
             audio = recognizer.record(source)
@@ -2708,7 +2709,7 @@ elif selected_page == "Crop Recommendation":
             st.success(f"📢 Detected command: {command}")
             if "recommend" in command or "crop" in command:
                 st.info("✅ Triggering crop recommendation...")
-                # 👉 Add your crop logic here
+                # 👉 Your crop model logic goes here
         except Exception as e:
             st.error(f"Error: {e}")
 
@@ -2719,7 +2720,6 @@ elif selected_page == "Fertilizer Recommendation":
     uploaded_audio = st.file_uploader("📁 Upload voice for fertilizer command (.wav)", type=["wav"], key="fert_voice")
 
     if uploaded_audio:
-        import speech_recognition as sr
         recognizer = sr.Recognizer()
         with sr.AudioFile(uploaded_audio) as source:
             audio = recognizer.record(source)
@@ -2728,19 +2728,18 @@ elif selected_page == "Fertilizer Recommendation":
             st.success(f"📢 Detected command: {command}")
             if "fertilizer" in command or "खाद" in command or "urvarak" in command:
                 st.info("✅ Triggering fertilizer recommendation...")
-                # 👉 Add your fertilizer logic here
+                # 👉 Your fertilizer model logic goes here
         except Exception as e:
             st.error(f"Error: {e}")
 
 # 🤖 AI Assistant Page
 elif selected_page == "AI Assistant":
-    st.header("🧠 AI Assistant")
+    st.header("🧠 AnnDoot AI Assistant")
 
-    uploaded_audio = st.file_uploader("🎙 Upload your voice (.wav)", type=["wav"], key="ai_voice")
+    uploaded_audio = st.file_uploader("🎙 Upload your voice message (.wav)", type=["wav"], key="ai_voice")
     voice_command = None
 
     if uploaded_audio:
-        import speech_recognition as sr
         recognizer = sr.Recognizer()
         with sr.AudioFile(uploaded_audio) as source:
             audio = recognizer.record(source)
@@ -2757,6 +2756,8 @@ elif selected_page == "AI Assistant":
 
     if user_input:
         st.chat_message("user").write(user_input)
-        response = f"(Bot reply) You said: {user_input}"  # Replace with Gemini/OpenAI logic
+        # Replace this with Gemini/OpenAI API integration
+        response = f"(Demo response) You said: {user_input}"
         st.chat_message("assistant").write(response)
+
 
