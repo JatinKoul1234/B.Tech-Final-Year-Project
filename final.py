@@ -2503,7 +2503,9 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
 if selected_page == "AI Assistant":
     st.header("🧠 AnnDoot AI Assistant")
 
+    # Step 1: Accept voice
     uploaded_audio = st.file_uploader("📁 Upload your voice message (.wav)", type=["wav"])
+    query = st.text_input("💬 Your question:")
 
     if uploaded_audio:
         import speech_recognition as sr
@@ -2514,9 +2516,20 @@ if selected_page == "AI Assistant":
         try:
             command = recognizer.recognize_google(audio)
             st.success(f"🎤 You said: {command}")
-            # Optional: Use the command to query Gemini or respond
+            query = command  # 🔁 Inject voice input into query box
         except Exception as e:
             st.error(f"❌ Could not understand audio: {e}")
+
+    # Step 2: Use the voice or text as input for chatbot
+    if query:
+        with st.spinner("🤖 Thinking..."):
+            # 🔁 Replace with your chatbot function
+            # Example:
+            # response = gemini_chatbot(query)
+            response = f"(Fake reply) You asked: {query}"  # demo
+        st.success(f"🧠 AI: {response}")
+
+            
 elif selected_page == "Crop Recommendation":
     st.header("🌾 Crop Recommendation")
 
