@@ -9,7 +9,6 @@ matplotlib
 numpy
 opencv-python
 pandas
-pickle
 python-dotenv
 re
 scikit-learn
