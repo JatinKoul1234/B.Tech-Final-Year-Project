@@ -11,7 +11,7 @@ opencv-python
 pandas
 python-dotenv
 scikit-learn
-skimage
+scikit-image
 streamlit
 streamlit_chat
 tensorflow
