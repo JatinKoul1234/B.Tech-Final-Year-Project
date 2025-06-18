@@ -6,7 +6,7 @@ gtts
 keras
 lime
 matplotlib
-numpy
+numpy==1.24.3
 opencv-python-headless==4.8.0.76
 pandas
 python-dotenv
