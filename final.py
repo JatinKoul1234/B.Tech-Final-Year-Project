@@ -2663,11 +2663,100 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
 #         except Exception as e:
 #             st.error(f"❌ Could not process voice command: {e}")
 
-uploaded_audio = st.file_uploader("Upload your voice command (.wav)", type=["wav"])
+# uploaded_audio = st.file_uploader("Upload your voice command (.wav)", type=["wav"])
 
-if uploaded_audio:
-    with sr.AudioFile(uploaded_audio) as source:
-        audio = recognizer.record(source)
-        command = recognizer.recognize_google(audio)
-        st.success(f"🎤 You said: {command}")
+# if uploaded_audio:
+#     with sr.AudioFile(uploaded_audio) as source:
+#         audio = recognizer.record(source)
+#         command = recognizer.recognize_google(audio)
+#         st.success(f"🎤 You said: {command}")
+
+import streamlit as st
+
+# Simple sidebar navigation without page_map
+selected_page = st.sidebar.selectbox("🔖 Navigation", [
+    "Home",
+    "Crop Recommendation",
+    "Fertilizer Recommendation",
+    "AI Assistant",
+    "About"
+])
+
+# 🏠 Home Page
+if selected_page == "Home":
+    st.header("🏡 Welcome to AnnDoot")
+    st.write("Empowering farmers with AI-based recommendations.")
+
+# ℹ️ About Page
+elif selected_page == "About":
+    st.header("ℹ️ About")
+    st.write("AnnDoot is your smart assistant for agriculture.")
+
+# 🌾 Crop Recommendation Page
+elif selected_page == "Crop Recommendation":
+    st.header("🌾 Crop Recommendation")
+
+    uploaded_audio = st.file_uploader("📁 Upload voice for crop command (.wav)", type=["wav"], key="crop_voice")
+
+    if uploaded_audio:
+        import speech_recognition as sr
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(uploaded_audio) as source:
+            audio = recognizer.record(source)
+        try:
+            command = recognizer.recognize_google(audio).lower()
+            st.success(f"📢 Detected command: {command}")
+            if "recommend" in command or "crop" in command:
+                st.info("✅ Triggering crop recommendation...")
+                # 👉 Add your crop logic here
+        except Exception as e:
+            st.error(f"Error: {e}")
+
+# 🌿 Fertilizer Recommendation Page
+elif selected_page == "Fertilizer Recommendation":
+    st.header("🌿 Fertilizer Recommendation")
+
+    uploaded_audio = st.file_uploader("📁 Upload voice for fertilizer command (.wav)", type=["wav"], key="fert_voice")
+
+    if uploaded_audio:
+        import speech_recognition as sr
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(uploaded_audio) as source:
+            audio = recognizer.record(source)
+        try:
+            command = recognizer.recognize_google(audio).lower()
+            st.success(f"📢 Detected command: {command}")
+            if "fertilizer" in command or "खाद" in command or "urvarak" in command:
+                st.info("✅ Triggering fertilizer recommendation...")
+                # 👉 Add your fertilizer logic here
+        except Exception as e:
+            st.error(f"Error: {e}")
+
+# 🤖 AI Assistant Page
+elif selected_page == "AI Assistant":
+    st.header("🧠 AI Assistant")
+
+    uploaded_audio = st.file_uploader("🎙 Upload your voice (.wav)", type=["wav"], key="ai_voice")
+    voice_command = None
+
+    if uploaded_audio:
+        import speech_recognition as sr
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(uploaded_audio) as source:
+            audio = recognizer.record(source)
+        try:
+            voice_command = recognizer.recognize_google(audio)
+            st.chat_message("user").write(f"🎤 {voice_command}")
+        except Exception as e:
+            st.chat_message("assistant").write(f"❌ Voice error: {e}")
+
+    user_input = st.chat_input("💬 Type your question or use voice above")
+
+    if voice_command:
+        user_input = voice_command
+
+    if user_input:
+        st.chat_message("user").write(user_input)
+        response = f"(Bot reply) You said: {user_input}"  # Replace with Gemini/OpenAI logic
+        st.chat_message("assistant").write(response)
 
