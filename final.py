@@ -2487,17 +2487,85 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
 #     voice_command = recognize_voice_command()
 # else:
 #     st.warning("🎙 Voice input is only available in the local version of this app.")
-import speech_recognition as sr
+# import speech_recognition as sr
 
-uploaded_audio = st.file_uploader("📁 Upload your voice message (.wav)", type=["wav"])
+# uploaded_audio = st.file_uploader("📁 Upload your voice message (.wav)", type=["wav"])
 
-if uploaded_audio:
-    recognizer = sr.Recognizer()
-    with sr.AudioFile(uploaded_audio) as source:
-        audio = recognizer.record(source)
-    try:
-        command = recognizer.recognize_google(audio)
-        st.success(f"🎤 You said: {command}")
-    except Exception as e:
-        st.error(f"❌ Could not understand audio: {e}")
+# if uploaded_audio:
+#     recognizer = sr.Recognizer()
+#     with sr.AudioFile(uploaded_audio) as source:
+#         audio = recognizer.record(source)
+#     try:
+#         command = recognizer.recognize_google(audio)
+#         st.success(f"🎤 You said: {command}")
+#     except Exception as e:
+#         st.error(f"❌ Could not understand audio: {e}")
+if selected_page == "AI Assistant":
+    st.header("🧠 AnnDoot AI Assistant")
+
+    uploaded_audio = st.file_uploader("📁 Upload your voice message (.wav)", type=["wav"])
+
+    if uploaded_audio:
+        import speech_recognition as sr
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(uploaded_audio) as source:
+            audio = recognizer.record(source)
+
+        try:
+            command = recognizer.recognize_google(audio)
+            st.success(f"🎤 You said: {command}")
+            # Optional: Use the command to query Gemini or respond
+        except Exception as e:
+            st.error(f"❌ Could not understand audio: {e}")
+elif selected_page == "Crop Recommendation":
+    st.header("🌾 Crop Recommendation")
+
+    # Add a "Voice Command" button for model navigation
+    if st.button("🎙 Voice Command"):
+        st.info("Voice command feature is available locally or through upload.")
+
+    # Optional fallback: upload .wav
+    uploaded_audio = st.file_uploader("📁 Upload a voice command (.wav)", type=["wav"])
+    if uploaded_audio:
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(uploaded_audio) as source:
+            audio = recognizer.record(source)
+        try:
+            command = recognizer.recognize_google(audio).lower()
+            st.success(f"📢 Detected command: {command}")
+
+            if "recommend" in command or "crop" in command:
+                st.experimental_rerun()  # or run your model logic
+        except Exception as e:
+            st.error(f"Error recognizing voice command: {e}")
+            
+elif selected_page == "Fertilizer Recommendation":
+    st.header("🌿 Fertilizer Recommendation")
+
+    # 📁 Upload voice command as .wav
+    uploaded_audio = st.file_uploader("📁 Upload your voice command (.wav)", type=["wav"])
+
+    if uploaded_audio:
+        import speech_recognition as sr
+        recognizer = sr.Recognizer()
+
+        try:
+            with sr.AudioFile(uploaded_audio) as source:
+                audio = recognizer.record(source)
+
+            command = recognizer.recognize_google(audio).lower()
+            st.success(f"📢 You said: {command}")
+
+            # 🧠 Simple rule-based command interpretation
+            if "fertilizer" in command or "खाद" in command or "urvarak" in command:
+                st.info("✅ Triggering fertilizer recommendation logic...")
+                # 👉 You can call your fertilizer prediction function here:
+                # e.g., recommended_fert = recommend_fertilizer(crop, N, P, K, ...)
+                # st.success(f"Recommended Fertilizer: {recommended_fert}")
+
+            else:
+                st.warning("❓ Voice command doesn't match any known fertilizer trigger words.")
+
+        except Exception as e:
+            st.error(f"❌ Could not process voice command: {e}")
 
