@@ -10,7 +10,6 @@ numpy
 opencv-python
 pandas
 python-dotenv
-re
 scikit-learn
 skimage
 streamlit
