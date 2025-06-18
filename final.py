@@ -767,20 +767,21 @@ import streamlit as st
 # disease_model = load_disease_model()
 
 def load_disease_model():
-    """Loads the TensorFlow model for disease prediction from a zip archive."""
-    model_filename = 'trained_model.h5'
-    zip_filename = 'trained_model.zip'
+    model_path = "trained_model.h5"
+    google_drive_file_id = "1JPh9Nx4Kozz9VMmlBsab6fF5ln9tgt_r"
 
     try:
-        # Unzip if not already extracted
-        if not os.path.exists(model_filename) and os.path.exists(zip_filename):
-            with zipfile.ZipFile(zip_filename, 'r') as zip_ref:
-                zip_ref.extractall()
+        if not os.path.exists(model_path):
+            st.info("📥 Downloading trained_model.h5 from Google Drive...")
+            url = f"https://drive.google.com/uc?id={google_drive_file_id}"
+            gdown.download(url, model_path, quiet=False)
 
-        # Now load the model
-        model = tf.keras.models.load_model(model_filename)
+        if not os.path.exists(model_path):
+            st.error("❌ Download failed. Check Google Drive permissions or link.")
+            return None
+
+        model = tf.keras.models.load_model(model_path)
         return model
-
     except Exception as e:
         st.error(f"❌ Error loading disease model: {e}")
         return None
