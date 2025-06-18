@@ -15,3 +15,4 @@ scikit-image
 streamlit
 streamlit_chat
 tensorflow
+gdown
