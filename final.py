@@ -2010,7 +2010,7 @@ elif app_mode == "🧠 AI Assistant":
     ]
 
     fertilizer_words = [
-        "fertilizer", "urvarak", "उर्वरक", "fertilizante", "engrais",
+        "fertilizer", "urvarak", "उर्वरक", "fertilizante", "engrais", "khad",
         "खाद", "खत", "खते", "મટણું", "உரங்கள்", "உரம்", "ಪೋಷಕಾಂಶ"
     ]
 
