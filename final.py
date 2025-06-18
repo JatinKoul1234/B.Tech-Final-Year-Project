@@ -2479,11 +2479,25 @@ if st.session_state.get("nav") == "Fertilizer Recommendation":
             else:
                 st.sidebar.success(f"🌿 Recommended Fertilizer: {fert_result}")
 
-import socket
+# import socket
 
-def is_localhost():
-    return socket.gethostname().startswith("DESKTOP")  # or whatever your PC's hostname starts with
-if is_localhost():
-    voice_command = recognize_voice_command()
-else:
-    st.warning("🎙 Voice input is only available in the local version of this app.")
+# def is_localhost():
+#     return socket.gethostname().startswith("DESKTOP")  # or whatever your PC's hostname starts with
+# if is_localhost():
+#     voice_command = recognize_voice_command()
+# else:
+#     st.warning("🎙 Voice input is only available in the local version of this app.")
+import speech_recognition as sr
+
+uploaded_audio = st.file_uploader("📁 Upload your voice message (.wav)", type=["wav"])
+
+if uploaded_audio:
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(uploaded_audio) as source:
+        audio = recognizer.record(source)
+    try:
+        command = recognizer.recognize_google(audio)
+        st.success(f"🎤 You said: {command}")
+    except Exception as e:
+        st.error(f"❌ Could not understand audio: {e}")
+
